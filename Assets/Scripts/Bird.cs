@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Bird : MonoBehaviour
 {
@@ -10,12 +11,14 @@ public class Bird : MonoBehaviour
     private static readonly int YVelocity = Animator.StringToHash("YVelocity");
     private static readonly int AnimationJump = Animator.StringToHash("Jump");
     private static readonly int Death = Animator.StringToHash("Death");
+    private static readonly int JumpVariety = Animator.StringToHash("JumpVariety");
+
+    private int jumpVariety;
 
     public static event Action<int> OnCenterTrigger;
     public static event Action OnPipeCollision;
     public static event Action OnFirstJump;
     public static event Action OnJump;
-
 
     private void Awake()
     {
@@ -79,10 +82,13 @@ public class Bird : MonoBehaviour
             OnFirstJump?.Invoke();
         }
 
+        jumpVariety = Random.Range(1, 3);
+        animator.SetInteger(JumpVariety, jumpVariety);
+        
         animator.SetTrigger(AnimationJump);
-        
+
         Jump();
-        
+
         OnJump?.Invoke();
     }
 
